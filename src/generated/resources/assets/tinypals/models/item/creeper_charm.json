@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "tinypals:item/creeper_charm",
+    "layer1": "tinypals:item/creeper_charm_overlay"
+  }
+}

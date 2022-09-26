@@ -1,0 +1,10 @@
+{
+  "entity.tinypals.baby_ghast": "Baby Ghast",
+  "entity.tinypals.trecking_creeper": "Trecking Creeper",
+  "item.tinypals.baby_ghast": "Baby Ghast Spawn Egg",
+  "item.tinypals.creeper_charm": "Creeper Charm",
+  "item.tinypals.scrape_knife": "Scrape Knife",
+  "item.tinypals.trecking_creeper": "Trecking Creeper Spawn Egg",
+  "itemGroup.tinypals": "Tiny Pals Tab",
+  "trecking_creeper_gui": "Trecking Creeper Inventory"
+}

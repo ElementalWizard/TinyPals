@@ -1,0 +1,16 @@
+modLoader="javafml" #mandatory
+loaderVersion="[43,)" #mandatory
+license="All Rights Reserved"
+updateJSONURL="${update_json}" #optional
+issueTrackerURL="https://github.com/ElementalWizard/Bedrock-Resources/issues" #optional
+displayURL="" #optional
+logoFile="bedrockresources_logo.png"
+credits="Life" #optional
+authors="AlexVR" #The man himself
+
+[[mods]] #mandatory
+modId="tinypals" #mandatory
+version="3" #mandatory
+displayName="Tiny Pals" #mandatory
+description='''Tiny Friends, but dont anger them.
+    '''
