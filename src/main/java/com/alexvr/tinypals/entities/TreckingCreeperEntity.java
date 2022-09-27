@@ -562,6 +562,11 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
         }
     }
 
+    @Override
+    public boolean isAngryAt(LivingEntity pTarget) {
+        return isTamed() ? pTarget instanceof Monster: NeutralMob.super.isAngryAt(pTarget);
+    }
+
     public boolean isInSittingPose() {
         return (this.entityData.get(DATA_ID_FLAGS) & 1) != 0;
     }
