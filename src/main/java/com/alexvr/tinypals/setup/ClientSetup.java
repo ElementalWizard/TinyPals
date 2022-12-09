@@ -2,8 +2,12 @@ package com.alexvr.tinypals.setup;
 
 import com.alexvr.tinypals.TinyPals;
 import com.alexvr.tinypals.client.model.BabyGhastModel;
+import com.alexvr.tinypals.client.model.FireSummonModel;
+import com.alexvr.tinypals.client.model.RainSummonModel;
 import com.alexvr.tinypals.client.model.TreckingCreeperModel;
 import com.alexvr.tinypals.client.renderer.BabyGhastRenderer;
+import com.alexvr.tinypals.client.renderer.FireSummonRenderer;
+import com.alexvr.tinypals.client.renderer.RainSummonRenderer;
 import com.alexvr.tinypals.client.renderer.TreckingCreeperRenderer;
 import com.alexvr.tinypals.client.screen.TreckingCreeperScreen;
 import com.alexvr.tinypals.items.CreeperCharm;
@@ -50,12 +54,16 @@ public class ClientSetup {
         event.registerLayerDefinition(TreckingCreeperModel.LAYER_LOCATION,TreckingCreeperModel::createBodyLayer);
         event.registerLayerDefinition(TreckingCreeperModel.ARMOR_LAYER_LOCATION,TreckingCreeperModel::createBodyLayer);
         event.registerLayerDefinition(BabyGhastModel.LAYER_LOCATION,BabyGhastModel::createBodyLayer);
+        event.registerLayerDefinition(RainSummonModel.LAYER_LOCATION,RainSummonModel::createBodyLayer);
+        event.registerLayerDefinition(FireSummonModel.LAYER_LOCATION,FireSummonModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(Registration.TRECKING_CREEPER.get(), TreckingCreeperRenderer::new);
         event.registerEntityRenderer(Registration.BABY_GHAST.get(), BabyGhastRenderer::new);
+        event.registerEntityRenderer(Registration.RAIN_SUMMON.get(), RainSummonRenderer::new);
+        event.registerEntityRenderer(Registration.FIRE_SUMMON.get(), FireSummonRenderer::new);
     }
 
 }

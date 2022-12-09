@@ -29,6 +29,10 @@ public class ModLanguageProvider extends LanguageProvider {
 
         add(Registration.TRECKING_CREEPER.get(), "Trecking Creeper");
         add(Registration.BABY_GHAST.get(), "Baby Ghast");
+        add(Registration.FIRE_SUMMON.get(), "Fire Summon");
+        add(Registration.FIRE_SUMMON_ITEM.get(), "Fire Summon Spawn Egg");
+        add(Registration.RAIN_SUMMON.get(), "Rain Summon");
+        add(Registration.RAIN_SUMMON_ITEM.get(), "Rain Summon Spawn Egg");
     }
 
 

@@ -93,8 +93,8 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
     private static final EntityDataAccessor<Integer> DATA_SWELL_DIR = SynchedEntityData.defineId(TreckingCreeperEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_IS_POWERED = SynchedEntityData.defineId(TreckingCreeperEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_IS_IGNITED = SynchedEntityData.defineId(TreckingCreeperEntity.class, EntityDataSerializers.BOOLEAN);
-    public Dictionary<TagKey<Biome>,int[]> BIOME_FILTERS = new Hashtable<>();
-    private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.GUNPOWDER, Items.TNT);
+    public static Dictionary<TagKey<Biome>,int[]> BIOME_FILTERS = new Hashtable<>();
+    private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.TNT);
     private int lastAABBCalc;
     private AABB cachedAAB;
     protected int temper;
@@ -113,9 +113,6 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
 
     public TreckingCreeperEntity(EntityType<? extends TreckingCreeperEntity> p_i50206_1_, Level p_i50206_2_) {
         super(p_i50206_1_, p_i50206_2_);
-        biomeSetup();
-
-
     }
 
     protected void registerGoals() {
@@ -186,7 +183,7 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
 
             super.mobInteract(pPlayer, pHand);
             return retval;
-        }if (isTamed() && pPlayer.getUUID().equals(getOwnerUUID()) && itemstack.is(Items.STICK)) {
+        }if (isTamed() && pPlayer.getUUID().equals(getOwnerUUID()) && itemstack.is(Items.STICK) && pPlayer.isCreative()) {
             this.entityData.set(TYPE, getTypeDir() == 8? 0: getTypeDir()+1);
             if (this.level.isClientSide) {
                 return InteractionResult.CONSUME;
@@ -290,6 +287,7 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_21434_, DifficultyInstance p_21435_, MobSpawnType p_21436_, @org.jetbrains.annotations.Nullable SpawnGroupData p_21437_, @org.jetbrains.annotations.Nullable CompoundTag p_21438_) {
         if(!getTypeAssignedDir()){
+            biomeSetup();
             setType( p_21434_.getLevel().getBiome(getOnPos()));
         }
         return super.finalizeSpawn(p_21434_, p_21435_, p_21436_, p_21437_, p_21438_);

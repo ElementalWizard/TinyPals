@@ -9,4 +9,6 @@ public class TinyReferences {
     public static final String SCRAPE_KNIFE_REGNAME = "scrape_knife";
     public static final String CREEPER_CHARM_REGNAME = "creeper_charm";
 
+    public static final String FIRE_SUMMON = "fire_summon";
+    public static final String RAIN_SUMMON = "rain_summon";
 }

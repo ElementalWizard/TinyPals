@@ -1,6 +1,8 @@
 package com.alexvr.tinypals.setup;
 
 import com.alexvr.tinypals.entities.BabyGhastEntity;
+import com.alexvr.tinypals.entities.FireSummonEntity;
+import com.alexvr.tinypals.entities.RainSummonEntity;
 import com.alexvr.tinypals.entities.TreckingCreeperEntity;
 import com.alexvr.tinypals.items.CreeperCharm;
 import com.alexvr.tinypals.items.ScrapeKnife;
@@ -58,6 +60,19 @@ public class Registration {
             .setShouldReceiveVelocityUpdates(false)
             .build(TinyReferences.BABY_GHAST_REGNAME));
     public static final RegistryObject<Item> BABY_GHAST_EGG_ITEM = ITEMS.register(TinyReferences.BABY_GHAST_REGNAME, () -> new ForgeSpawnEggItem(BABY_GHAST, 0xffffff, 0xff0000, new Item.Properties().tab(ModSetup.GROUP)));
+
+    public static final RegistryObject<EntityType<FireSummonEntity>> FIRE_SUMMON = ENTITIES.register(TinyReferences.FIRE_SUMMON, () -> EntityType.Builder.of(FireSummonEntity::new, MobCategory.CREATURE)
+            .sized(0.4f, 0.65f)
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(false)
+            .build(TinyReferences.FIRE_SUMMON));
+    public static final RegistryObject<Item> FIRE_SUMMON_ITEM = ITEMS.register(TinyReferences.FIRE_SUMMON, () -> new ForgeSpawnEggItem(FIRE_SUMMON, 0xB21C1C, 0x1C1C1C, new Item.Properties().tab(ModSetup.GROUP)));
+    public static final RegistryObject<EntityType<RainSummonEntity>> RAIN_SUMMON = ENTITIES.register(TinyReferences.RAIN_SUMMON, () -> EntityType.Builder.of(RainSummonEntity::new, MobCategory.CREATURE)
+            .sized(0.4f, 0.65f)
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(false)
+            .build(TinyReferences.RAIN_SUMMON));
+    public static final RegistryObject<Item> RAIN_SUMMON_ITEM = ITEMS.register(TinyReferences.RAIN_SUMMON, () -> new ForgeSpawnEggItem(RAIN_SUMMON, 0x7ADEFF, 0xDEC02E, new Item.Properties().tab(ModSetup.GROUP)));
 
    public static final RegistryObject<ScrapeKnife> SCRAPE_KNIFE_ITEM = ITEMS.register(TinyReferences.SCRAPE_KNIFE_REGNAME, () -> new ScrapeKnife((new Item.Properties()).tab(ModSetup.GROUP).stacksTo(1)));
     public static final RegistryObject<CreeperCharm> CREEPER_CHARM_ITEM = ITEMS.register(TinyReferences.CREEPER_CHARM_REGNAME, () -> new CreeperCharm((new Item.Properties().stacksTo(1)).tab(ModSetup.GROUP)));

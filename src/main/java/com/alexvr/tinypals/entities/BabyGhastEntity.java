@@ -17,10 +17,10 @@ public class BabyGhastEntity extends Ghast {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 3.0)
-                .add(Attributes.MAX_HEALTH, 5)
+                .add(Attributes.ATTACK_DAMAGE, 1.5)
+                .add(Attributes.MAX_HEALTH, 3)
                 .add(Attributes.FOLLOW_RANGE, 64)
-                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.MOVEMENT_SPEED, 0.13)
                 .add(Attributes.ARMOR, 1.0D)
                 .add(Attributes.ARMOR_TOUGHNESS,1.0D);
     }

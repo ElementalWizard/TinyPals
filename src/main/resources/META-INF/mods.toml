@@ -14,3 +14,9 @@ version="3" #mandatory
 displayName="Tiny Pals" #mandatory
 description='''Tiny Friends, but dont anger them.
     '''
+[[dependencies.tinypals]]
+modId="forge"
+mandatory=true
+versionRange="[43.2.0,)"
+ordering="NONE"
+side="BOTH"

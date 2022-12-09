@@ -24,5 +24,7 @@ public class ModItemModels extends ItemModelProvider {
         withExistingParent(Registration.TRECKING_CREEPER_EGG_ITEM.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(Registration.BABY_GHAST_EGG_ITEM.getId().getPath(), mcLoc("item/template_spawn_egg"));
 
+        withExistingParent(Registration.FIRE_SUMMON_ITEM.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(Registration.RAIN_SUMMON.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 }
