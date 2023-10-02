@@ -1,16 +1,13 @@
 {
+  "creativetab.all_items_tab": "Tiny Pals",
   "entity.tinypals.baby_ghast": "Baby Ghast",
-  "entity.tinypals.emerald_man": "Emerald Man",
   "entity.tinypals.fire_summon": "Fire Summon",
   "entity.tinypals.rain_summon": "Rain Summon",
   "entity.tinypals.trecking_creeper": "Trecking Creeper",
   "item.tinypals.baby_ghast": "Baby Ghast Spawn Egg",
   "item.tinypals.creeper_charm": "Creeper Charm",
-  "item.tinypals.emerald_man": "Emerald Man Spawn Egg",
   "item.tinypals.fire_summon": "Fire Summon Spawn Egg",
   "item.tinypals.rain_summon": "Rain Summon Spawn Egg",
-  "item.tinypals.scrape_knife": "Scrape Knife",
   "item.tinypals.trecking_creeper": "Trecking Creeper Spawn Egg",
-  "itemGroup.tinypals": "Tiny Pals Tab",
   "trecking_creeper_gui": "Trecking Creeper Inventory"
 }

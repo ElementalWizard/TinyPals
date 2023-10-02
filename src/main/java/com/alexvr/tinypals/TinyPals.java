@@ -6,7 +6,9 @@ import com.alexvr.tinypals.setup.ModSetup;
 import com.alexvr.tinypals.setup.Registration;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -40,13 +42,21 @@ public class TinyPals {
         IEventBus event = FMLJavaModLoadingContext.get().getModEventBus();
 
         event.addListener(ModSetup::init);
+        event.addListener(this::addCreative);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> event.addListener(ClientSetup::init));
 
         ModConfig.loadConfig(ModConfig.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("tinypals-client.toml"));
         ModConfig.loadConfig(ModConfig.SERVER_CONFIG, FMLPaths.CONFIGDIR.get().resolve("tinypals-common.toml"));
 
     }
-
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if(event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(Registration.FIRE_SUMMON_ITEM);
+            event.accept(Registration.RAIN_SUMMON_ITEM);
+            event.accept(Registration.BABY_GHAST_EGG_ITEM);
+            event.accept(Registration.TRECKING_CREEPER_EGG_ITEM);
+        }
+    }
     public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
                                              BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
         PACKET_HANDLER.registerMessage(messageID, messageType, encoder, decoder, messageConsumer);

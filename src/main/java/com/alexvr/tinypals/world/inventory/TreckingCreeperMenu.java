@@ -12,6 +12,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -23,7 +24,6 @@ import java.util.function.Supplier;
 
 public class TreckingCreeperMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
 
-    public final static HashMap<String, Object> guistate = new HashMap<>();
 
     public final Level world;
     public final Player entity;
@@ -39,7 +39,7 @@ public class TreckingCreeperMenu extends AbstractContainerMenu implements Suppli
         super(Registration.TRECKING_CREEPER_MENU.get(), id);
 
         this.entity = inv.player;
-        this.world = inv.player.level;
+        this.world = inv.player.level();
 
         this.internal = new ItemStackHandler(27);
 
@@ -72,7 +72,7 @@ public class TreckingCreeperMenu extends AbstractContainerMenu implements Suppli
                         this.bound = true;
                     });
             } else { // might be bound to block
-                BlockEntity ent = inv.player != null ? inv.player.level.getBlockEntity(pos) : null;
+                BlockEntity ent = inv.player != null ? inv.player.level().getBlockEntity(pos) : null;
                 if (ent != null) {
                     ent.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
                         this.internal = capability;

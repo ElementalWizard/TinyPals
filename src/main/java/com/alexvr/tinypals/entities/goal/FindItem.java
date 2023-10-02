@@ -51,7 +51,7 @@ public class FindItem extends Goal {
     }
 
     public List<ItemEntity> nearbyItems() {
-        return treckingCreeper.level.getEntitiesOfClass(ItemEntity.class, treckingCreeper.getAABB(),treckingCreeper.isTamed()? TAMED_TARGET_SELECTOR: NONTAMED_TARGET_SELECTOR);
+        return treckingCreeper.level().getEntitiesOfClass(ItemEntity.class, treckingCreeper.getAABB(),treckingCreeper.isTamed()? TAMED_TARGET_SELECTOR: NONTAMED_TARGET_SELECTOR);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class FindItem extends Goal {
         }
         Collections.shuffle(destList);
         for (ItemEntity e : destList) {
-            Path path = treckingCreeper.getNavigation().createPath(new BlockPos(e.position()), 1, 9);
+            Path path = treckingCreeper.getNavigation().createPath(new BlockPos((int) e.position().x, (int) e.position().y, (int) e.position().z), 1, 9);
             if (path != null && path.canReach()) {
                 this.dest = e;
                 break;
@@ -93,7 +93,7 @@ public class FindItem extends Goal {
         }
         timeFinding++;
         treckingCreeper.getNavigation().stop();
-        Path path = treckingCreeper.getNavigation().createPath(new BlockPos(dest.position()), 1, 9);
+        Path path = treckingCreeper.getNavigation().createPath(new BlockPos((int) dest.position().x, (int) dest.position().y, (int) dest.position().z), 1, 9);
         if (path == null || !path.canReach()) {
             stuckTicks++;
             if (stuckTicks > 20 * 5) { // Give up after 5 seconds of being unpathable, in case we fall or jump into the air

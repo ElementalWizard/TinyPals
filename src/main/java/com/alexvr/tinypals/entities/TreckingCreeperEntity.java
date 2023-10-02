@@ -23,6 +23,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
@@ -53,7 +55,6 @@ import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -148,14 +149,14 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
     @Override
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        if (isTamed() && pPlayer.getUUID().equals(getOwnerUUID()) && itemstack.is(Registration.SCRAPE_KNIFE_ITEM.get())) {
-            this.level.playSound(pPlayer, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
-            if (!this.level.isClientSide) {
+        if (isTamed() && pPlayer.isShiftKeyDown() && pPlayer.getUUID().equals(getOwnerUUID()) && itemstack.isEmpty()) {
+            this.level().playSound(pPlayer, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+            if (!this.level().isClientSide) {
                 this.kill();
             }
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }if (isTamed() && pPlayer.getUUID().equals(getOwnerUUID()) && itemstack.isEmpty()) {
-            InteractionResult retval = InteractionResult.sidedSuccess(this.level.isClientSide());
+            InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
 
             if (pPlayer instanceof ServerPlayer serverPlayer) {
                 NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
@@ -185,26 +186,26 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
             return retval;
         }if (isTamed() && pPlayer.getUUID().equals(getOwnerUUID()) && itemstack.is(Items.STICK) && pPlayer.isCreative()) {
             this.entityData.set(TYPE, getTypeDir() == 8? 0: getTypeDir()+1);
-            if (this.level.isClientSide) {
+            if (this.level().isClientSide) {
                 return InteractionResult.CONSUME;
             }else {
                 return InteractionResult.SUCCESS ;
             }
         }
         if (itemstack.is(Items.FLINT_AND_STEEL)) {
-            this.level.playSound(pPlayer, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
-            if (!this.level.isClientSide) {
+            this.level().playSound(pPlayer, this.getX(), this.getY(), this.getZ(), SoundEvents.FLINTANDSTEEL_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+            if (!this.level().isClientSide) {
                 this.ignite();
                 itemstack.hurtAndBreak(1, pPlayer, (p_32290_) -> p_32290_.broadcastBreakEvent(pHand));
             }
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }else if (itemstack.getItem() instanceof DyeItem dyeItem) {
-            this.level.playSound(pPlayer, this.getX(), this.getY(), this.getZ(), SoundEvents.DYE_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
+            this.level().playSound(pPlayer, this.getX(), this.getY(), this.getZ(), SoundEvents.DYE_USE, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.4F + 0.8F);
             setBackpackColor(dyeItem.getDyeColor());
             if (!pPlayer.getAbilities().instabuild) {
                 itemstack.shrink(1);
             }
-            if (this.level.isClientSide) {
+            if (this.level().isClientSide) {
                 return InteractionResult.CONSUME;
             }else {
                 return InteractionResult.SUCCESS ;
@@ -216,7 +217,7 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
                 this.jumping = false;
                 this.navigation.stop();
                 this.setTarget(null);
-                if (this.level.isClientSide) {
+                if (this.level().isClientSide) {
                     return InteractionResult.CONSUME;
                 }else {
                     return InteractionResult.SUCCESS ;
@@ -249,8 +250,8 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
                 this.swell = this.maxSwell;
                 this.explodeCreeper();
             }
-            if (this.getHeldStack().isEmpty() && !level.isClientSide ) {
-                for (ItemEntity itementity : this.level.getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(1))) {
+            if (this.getHeldStack().isEmpty() && !level().isClientSide ) {
+                for (ItemEntity itementity : this.level().getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(1))) {
                     if (!this.isTamed() && itementity.isAlive() && !itementity.getItem().isEmpty() && !itementity.hasPickUpDelay() && itementity.getItem().is(Items.TNT)) {
                         this.pickUpItem(itementity);
                         if (getHeldStack() != null && !getHeldStack().isEmpty())
@@ -269,11 +270,9 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
     }
 
     private void explodeCreeper() {
-        if (!this.level.isClientSide) {
-            Explosion.BlockInteraction explosion$blockinteraction = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this) ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE;
-            explosion$blockinteraction = isTamed() ? Explosion.BlockInteraction.NONE : explosion$blockinteraction;
+        if (!this.level().isClientSide) {
             float f = this.isPowered() ? 2.0F : 1.0F;
-            this.level.explode(this, this.getX(), this.getY(), this.getZ(), (float)this.explosionRadius * f, explosion$blockinteraction);
+            this.level().explode(this, this.getX(), this.getY(), this.getZ(), (float)this.explosionRadius * f, isTamed() ? Level.ExplosionInteraction.NONE : Level.ExplosionInteraction.MOB);
             spawnLingeringCloud();
             setSwellDir(-1);
             this.swell = 0;
@@ -295,16 +294,16 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
 
     @Override
     public boolean isInvulnerableTo(DamageSource pSource) {
-        return pSource.isExplosion() || pSource.equals(DamageSource.LIGHTNING_BOLT);
+        return pSource.is(DamageTypeTags.IS_EXPLOSION) || pSource.is(DamageTypeTags.IS_LIGHTNING);
     }
 
     private void spawnLingeringCloud() {
         Collection<MobEffectInstance> collection = this.getActiveEffects();
         if (!collection.isEmpty()) {
-            Player player = level.getNearestPlayer(this,16);
-            AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level, this.getX(), this.getY(), this.getZ());
+            Player player = level().getNearestPlayer(this,16);
+            AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level(), this.getX(), this.getY(), this.getZ());
             if (player != null){
-                areaeffectcloud = new AreaEffectCloud(this.level, player.getX(), player.getY(), player.getZ());
+                areaeffectcloud = new AreaEffectCloud(this.level(), player.getX(), player.getY(), player.getZ());
             }
             areaeffectcloud.setRadius(2.0F);
             areaeffectcloud.setRadiusOnUse(-0.5F);
@@ -316,7 +315,7 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
                 areaeffectcloud.addEffect(new MobEffectInstance(mobeffectinstance));
             }
 
-            this.level.addFreshEntity(areaeffectcloud);
+            this.level().addFreshEntity(areaeffectcloud);
         }
 
     }
@@ -477,7 +476,7 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
         if (!isTamed() && this.getHeldStack().is(Items.TNT)) {
             tamingTime++;
 
-            if (tamingTime > 60 && !level.isClientSide) {
+            if (tamingTime > 60 && !level().isClientSide) {
                 ItemStack stack = new ItemStack(Registration.CREEPER_CHARM_ITEM.get(),1);
                 NBTHelper.setString(stack,"color",this.entityData.get(DATA_ID_BACKPPACK_COLOR));
                 NBTHelper.setInteger(stack,"type",getTypeDir());
@@ -491,16 +490,16 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
                 }
                 NBTHelper.setTag(stack,"InventoryCustom",inventory.serializeNBT());
 
-                ItemEntity drop = new ItemEntity(level, getX(),getY(),getZ(),stack);
+                ItemEntity drop = new ItemEntity(level(), getX(),getY(),getZ(),stack);
                 this.playSound(SoundEvents.CREEPER_PRIMED, 1.0F, 0.5F);
-                level.addFreshEntity(drop);
+                level().addFreshEntity(drop);
                 this.remove(RemovalReason.DISCARDED);
-            } else if (tamingTime > 55 && level.isClientSide) {
+            } else if (tamingTime > 55 && level().isClientSide) {
                 for (int i = 0; i < 10; i++) {
                     double d0 = getX();
                     double d1 = getY() + 0.1;
                     double d2 = getZ();
-                    level.addParticle(ParticleTypes.SMOKE, d0, d1, d2, (level.random.nextFloat() * 1 - 0.5) / 3, (level.random.nextFloat() * 1 - 0.5) / 3, (level.random.nextFloat() * 1 - 0.5) / 3);
+                    level().addParticle(ParticleTypes.SMOKE, d0, d1, d2, (level().random.nextFloat() * 1 - 0.5) / 3, (level().random.nextFloat() * 1 - 0.5) / 3, (level().random.nextFloat() * 1 - 0.5) / 3);
                 }
             }
         }
@@ -526,7 +525,7 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
             double d0 = this.random.nextGaussian() * 0.02D;
             double d1 = this.random.nextGaussian() * 0.02D;
             double d2 = this.random.nextGaussian() * 0.02D;
-            this.level.addParticle(particleoptions, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+            this.level().addParticle(particleoptions, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
         }
     }
     public boolean canAttackType(EntityType<?> pType) {
@@ -555,8 +554,13 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
 
             NBTHelper.setTag(stack,"InventoryCustom",inventory.serializeNBT());
 
-            ItemEntity drop = new ItemEntity(level, getX(),getY(),getZ(),stack);
-            level.addFreshEntity(drop);
+            Player player = Minecraft.getInstance().level.getPlayerByUUID(getOwnerUUID());
+            if(player != null){
+                player.getInventory().add(stack);
+            }else{
+                ItemEntity drop = new ItemEntity(level(), getX(),getY(),getZ(),stack);
+                level().addFreshEntity(drop);
+            }
         }
     }
 
@@ -666,7 +670,7 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
     public boolean tameWithName(Player pPlayer) {
         this.setOwnerUUID(pPlayer.getUUID());
         this.setTamed(true);
-        this.level.broadcastEntityEvent(this, (byte)7);
+        this.level().broadcastEntityEvent(this, (byte)7);
         return true;
     }
     public float getSwelling(float pPartialTicks) {
@@ -830,7 +834,7 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
 
         public FollowOwnerGoal(TreckingCreeperEntity pTamable, double pSpeedModifier, float pStartDistance, float pStopDistance, boolean pCanFly) {
             this.tamable = pTamable;
-            this.level = pTamable.level;
+            this.level = pTamable.level();
             this.speedModifier = pSpeedModifier;
             this.navigation = pTamable.getNavigation();
             this.startDistance = pStartDistance;
@@ -943,16 +947,16 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
         }
 
         private boolean canTeleportTo(BlockPos pPos) {
-            BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, pPos.mutable());
+            BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(level(), pPos.mutable());
             if (blockpathtypes != BlockPathTypes.WALKABLE) {
                 return false;
             } else {
-                BlockState blockstate = this.level.getBlockState(pPos.below());
+                BlockState blockstate = level().getBlockState(pPos.below());
                 if (!this.canFly && blockstate.getBlock() instanceof LeavesBlock) {
                     return false;
                 } else {
                     BlockPos blockpos = pPos.subtract(this.tamable.blockPosition());
-                    return this.level.noCollision(this.tamable, this.tamable.getBoundingBox().move(blockpos));
+                    return level().noCollision(this.tamable, this.tamable.getBoundingBox().move(blockpos));
                 }
             }
         }
@@ -985,7 +989,7 @@ public class TreckingCreeperEntity extends Monster implements PowerableMob, Neut
                 return false;
             } else if (this.mob.isInWaterOrBubble()) {
                 return false;
-            } else if (!this.mob.isOnGround()) {
+            } else if (!this.mob.onGround()) {
                 return false;
             } else {
                 LivingEntity livingentity = Minecraft.getInstance().level.getPlayerByUUID(mob.getOwnerUUID());

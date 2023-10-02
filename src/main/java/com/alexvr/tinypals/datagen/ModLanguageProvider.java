@@ -4,11 +4,12 @@ import com.alexvr.tinypals.TinyPals;
 import com.alexvr.tinypals.setup.Registration;
 import com.alexvr.tinypals.utils.TinyReferences;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
 public class ModLanguageProvider extends LanguageProvider {
 
-    public ModLanguageProvider(DataGenerator generator, String language) {
+    public ModLanguageProvider(PackOutput generator, String language) {
         super(generator, TinyPals.MODID,language);
 
     }
@@ -16,11 +17,9 @@ public class ModLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
 
-        add(Registration.SCRAPE_KNIFE_ITEM.get(), "Scrape Knife" );
-
         add(Registration.CREEPER_CHARM_ITEM.get(), "Creeper Charm" );
 
-        add(TinyReferences.CREATIVE_TAB_NAME, "Tiny Pals Tab" );
+        add(TinyReferences.CREATIVE_TAB_NAME, "Tiny Pals" );
 
         add(Registration.TRECKING_CREEPER_EGG_ITEM.get(), "Trecking Creeper Spawn Egg");
         add(TinyReferences.TRECKING_CREEPER_GUI, "Trecking Creeper Inventory");

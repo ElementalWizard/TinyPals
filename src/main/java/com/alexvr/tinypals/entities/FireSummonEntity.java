@@ -26,7 +26,7 @@ public class FireSummonEntity extends Allay {
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         if(pPlayer.getItemInHand(pHand).is(Items.SPONGE)){
             pPlayer.getItemInHand(pHand).shrink(1);
-            this.level.getLevelData().setRaining(false);
+            this.level().getLevelData().setRaining(false);
             return InteractionResult.SUCCESS;
         }
         return super.mobInteract(pPlayer, pHand);

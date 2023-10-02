@@ -36,7 +36,7 @@ public class RainSummonEntity extends Allay {
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         if(pPlayer.getItemInHand(pHand).is(Items.WATER_BUCKET)){
             pPlayer.setItemInHand(pHand,new ItemStack(Items.BUCKET));
-            this.level.getLevelData().setRaining(true);
+            this.level().getLevelData().setRaining(true);
             return InteractionResult.SUCCESS;
         }
         return super.mobInteract(pPlayer, pHand);

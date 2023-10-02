@@ -3,7 +3,6 @@ package com.alexvr.tinypals.client.model;
 import com.alexvr.tinypals.entities.RainSummonEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -16,6 +15,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 
 import static com.alexvr.tinypals.TinyPals.MODID;
+import static com.mojang.math.Axis.XP;
 
 
 public class RainSummonModel<T extends Entity>  extends HierarchicalModel<RainSummonEntity> implements ArmedModel{
@@ -110,7 +110,7 @@ public class RainSummonModel<T extends Entity>  extends HierarchicalModel<RainSu
         this.root.translateAndRotate(p_233323_);
         this.body.translateAndRotate(p_233323_);
         p_233323_.translate(0.0D, -0.09375D, 0.09375D);
-        p_233323_.mulPose(Vector3f.XP.rotation(this.right_arm.xRot + 0.43633232F));
+        p_233323_.mulPose(XP.rotation(this.right_arm.xRot + 0.43633232F));
         p_233323_.scale(0.7F, 0.7F, 0.7F);
         p_233323_.translate(0.0625D, 0.0D, 0.0D);
     }

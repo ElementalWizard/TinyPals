@@ -3,6 +3,7 @@ package com.alexvr.tinypals.datagen;
 import com.alexvr.tinypals.TinyPals;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
@@ -14,8 +15,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.function.BiConsumer;
 
 public class ModBlockStates extends BlockStateProvider {
-    public ModBlockStates(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, TinyPals.MODID,existingFileHelper);
+    public ModBlockStates(PackOutput output, ExistingFileHelper exFileHelper) {
+        super(output, TinyPals.MODID, exFileHelper);
     }
 
     @Override

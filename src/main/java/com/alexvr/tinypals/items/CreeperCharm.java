@@ -52,7 +52,6 @@ public class CreeperCharm extends Item {
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, java.util.List<net.minecraft.network.chat.Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(Component.literal("A charm to re-summon your Creeper friend"));
-        pTooltipComponents.add(Component.literal("You can tame the tiny creepers!").withStyle(ChatFormatting.DARK_GREEN));
         if (NBTHelper.getBoolean(pStack,"generated")){
             pTooltipComponents.add(Component.literal("Custom Name: " + NBTHelper.getStirng(pStack,"name")));
             int colorID=Integer.parseInt(NBTHelper.getStirng(pStack,"color"));
@@ -60,6 +59,9 @@ public class CreeperCharm extends Item {
             pTooltipComponents.add(Component.literal("Backpack Color: " + color.name()).withStyle(Style.EMPTY.withColor(color.getTextColor())));
             pTooltipComponents.add(Component.literal("Owner: " + (NBTHelper.getBoolean(pStack,"newSpawn") ?"Right Click to define" : Objects.requireNonNull(Objects.requireNonNull(pLevel).getPlayerByUUID(Objects.requireNonNull(NBTHelper.getUUID(pStack, "uuid")))).getName().getString())));
             pTooltipComponents.add(Component.literal("Type: " + getCreeperType(NBTHelper.getInt(pStack,"type"))));
+        }else{
+            pTooltipComponents.add(Component.literal("You can tame the tiny creepers, just toss some TNT!").withStyle(ChatFormatting.DARK_GREEN));
+            pTooltipComponents.add(Component.literal("Shift-RC with empty hand on pet to get charm."));
         }
     }
 
@@ -78,10 +80,10 @@ public class CreeperCharm extends Item {
     }
 
     public int getColor(ItemStack stack, int layer) {
-        int colorID=DyeColor.GREEN.getMaterialColor().col;
+        int colorID=DyeColor.GREEN.getMapColor().col;
         if (layer == 0){
             if (NBTHelper.getBoolean(stack,"generated")){
-                colorID=DyeColor.byId(Integer.parseInt(NBTHelper.getStirng(stack,"color"))).getMaterialColor().col;
+                colorID=DyeColor.byId(Integer.parseInt(NBTHelper.getStirng(stack,"color"))).getMapColor().col;
             }
         }else{
             if (NBTHelper.getBoolean(stack,"generated")){

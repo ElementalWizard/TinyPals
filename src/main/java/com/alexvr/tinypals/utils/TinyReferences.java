@@ -1,7 +1,7 @@
 package com.alexvr.tinypals.utils;
 
 public class TinyReferences {
-    public static final String CREATIVE_TAB_NAME = "itemGroup.tinypals";
+    public static final String CREATIVE_TAB_NAME = "creativetab.all_items_tab";
 
     public static final String TRECKING_CREEPER_REGNAME = "trecking_creeper";
     public static final String TRECKING_CREEPER_GUI = "trecking_creeper_gui";

@@ -79,9 +79,9 @@ public class TreckingCreeperModel<T extends Entity> extends EntityModel<T> {
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		head.render(poseStack, buffer, packedLight, packedOverlay);
 		if (backpack.visible){
-			var r = (color.getMaterialColor().col >> 16 & 255) / 255F;
-			var g = (color.getMaterialColor().col >> 8 & 255) / 255F;
-			var b = (color.getMaterialColor().col & 255) / 255F;
+			var r = (color.getMapColor().col >> 16 & 255) / 255F;
+			var g = (color.getMapColor().col >> 8 & 255) / 255F;
+			var b = (color.getMapColor().col & 255) / 255F;
 			backpack.render(poseStack, buffer, packedLight, packedOverlay,r,g,b,1);
 		}
 		body.render(poseStack, buffer, packedLight, packedOverlay);
